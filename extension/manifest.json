@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "SessionSentinel",
+  "version": "1.0",
+  "description": "Aggressively manages session cookie lifecycles to prevent token exfiltration.",
+  "permissions": [
+    "cookies",
+    "tabs",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
