@@ -21,23 +21,18 @@
 SessionSentinel closes this gap by synchronizing **real-time browser token lifecycle shredding** (Manifest V3 Service Worker) with an **out-of-band host OS process interceptor** (`watchdog` + `psutil`) across Windows and Linux.
 
 ```text
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│ 🛡️ S e s s i o n S e n t i n e l   dual-layer endpoint defense   ● ACTIVE · <500ms SLA  │
-├───────────────────────────────────────────┬──────────────────────────────────────────────┤
-│ LAYER 1 · BROWSER RUNTIME (Manifest V3)   │ LAYER 2 · HOST OS DAEMON (Windows & Linux)   │
-│ ╭───────────────────────────────────────╮ │ ╭──────────────────────────────────────────╮ │
-│ │ 🌐 Active Tab Map (tabDomains)        │ │ │ 🔒 Target: ...\Default\Network\Cookies   │ │
-│ │  ├─ [Tab 104] github.com     ● ACTIVE │ │ │ 📡 Engine: watchdog + 500ms psutil sweep │ │
-│ │  ├─ [Tab 108] reddit.com     ✕ CLOSED │ │ │ ✅ Allowed: chrome.exe, msedge.exe       │ │
-│ │  ╰─ ▶ Action: purgeCookiesForDomain() │ │ │ 🛡️ Canonical Path Filter: ENABLED        │ │
-│ ╰───────────────────────────────────────╯ │ ╰──────────────────────────────────────────╯ │
-│ ╭─ TOKEN SHREDDER LOG ──────────────────╮ │ ╭─ LIVE THREAT INTERCEPTION ───────────────╮ │
-│ │ [✓] Shredded: loid       (reddit.com) │ │ │ [!] ALERT: Unauthorized SQLite Read!     │ │
-│ │ [✓] Shredded: csv        (reddit.com) │ │ │  ├─ Rogue Process: python.exe (PID 26840)│ │
-│ │ [✓] Shredded: edgebucket (reddit.com) │ │ │  ├─ Vector: Read-Only Handle ('rb')      │ │
-│ │ [✓] Shredded: ads_cookie (reddit.com) │ │ │  ╰─ Status: ☠️ TERMINATED (SIGKILL)      │ │
-│ ╰───────────────────────────────────────╯ │ ╰──────────────────────────────────────────╯ │
-└───────────────────────────────────────────┴──────────────────────────────────────────────┘
+┌──────────────────────┐           ┌──────────────────────┐
+│   Layer 1: Browser   │           │   Layer 2: Host OS   │
+│  (Manifest V3 Ext.)  │           │   (Python Daemon)    │
+└──────────┬───────────┘           └──────────┬───────────┘
+           │                                  │
+  [User Closes Tab]               [Malware Reads Cookies DB]
+           │                                  │
+           ▼                                  ▼
+┌──────────────────────┐           ┌──────────────────────┐
+│  Shred Auth Tokens   │           │  Terminate Process   │
+│  (chrome.cookies)    │           │ (psutil.kill / kill) │
+└──────────────────────┘           └──────────────────────┘
 ```
 
 ## 🌟 Key Features
