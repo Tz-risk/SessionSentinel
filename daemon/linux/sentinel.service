@@ -1,0 +1,14 @@
+[Unit]
+Description=SessionSentinel OS Cookie Database Protection Daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/SessionSentinel/daemon/linux/monitor_linux.py
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

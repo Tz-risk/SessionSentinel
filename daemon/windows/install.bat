@@ -1,0 +1,6 @@
+@echo off
+echo [*] Installing SessionSentinel Windows Dependencies...
+python -m pip install -r ..\requirements.txt
+echo [*] Starting SessionSentinel Windows Daemon...
+python "%~dp0monitor_win.py"
+pause
