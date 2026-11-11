@@ -29,7 +29,7 @@ class CookieMonitorHandler(FileSystemEventHandler):
                     
                 open_files = proc.open_files()
                 for f in open_files:
-                    # FIX: Match the precise file path, not just the string "Cookies"
+                    
                     if f.path == EXACT_TARGET_PATH:
                         print(f"\n[ALERT] Unauthorized infostealer read detected!")
                         print(f" -> Process: {proc.info['name']} (PID: {proc.info['pid']})")
