@@ -7,7 +7,7 @@ from watchdog.events import FileSystemEventHandler
 # Standard path for the Chrome cookies database on Windows
 CHROME_NETWORK_DIR = os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\User Data\Default\Network")
 TARGET_FILE = "Cookies"
-# FIX: Define the exact absolute path to prevent killing other Electron apps
+
 EXACT_TARGET_PATH = os.path.join(CHROME_NETWORK_DIR, TARGET_FILE)
 
 AUTHORIZED_PROCS = ["chrome.exe", "msedge.exe"]
