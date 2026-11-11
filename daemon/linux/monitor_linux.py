@@ -13,7 +13,6 @@ CHROME_PATHS = [
     os.path.expanduser("~/.config/chromium/Default/Cookies")
 ]
 
-# Locate the active database path on the host system
 EXACT_TARGET_PATH = next((os.path.abspath(p) for p in CHROME_PATHS if os.path.exists(p)), os.path.abspath(CHROME_PATHS[0]))
 CHROME_DIR = os.path.dirname(EXACT_TARGET_PATH)
 
