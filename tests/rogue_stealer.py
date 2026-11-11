@@ -15,7 +15,7 @@ print(f"[*] Attempting to steal cookies from: {target}")
 try:
     with open(target, 'rb') as f:
         print("[+] Successfully opened database! Simulating data exfiltration...")
-        # Hold the file open so the daemon has time to catch and kill this process
+        # Holding the file open so the daemon has time to catch and kill this process
         time.sleep(10) 
 except FileNotFoundError:
     print("[-] Target database not found. Is Chrome installed?")
