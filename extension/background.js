@@ -1,4 +1,4 @@
-// Dictionary to track which domain is open in which tab
+// Dictonries to track which tabs are open
 const tabDomains = {};
 
 // Listen for tab updates to map tab IDs to their current domain
@@ -9,9 +9,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             // Ignore internal browser pages like chrome:// or edge://
             if (!url.protocol.startsWith('http')) return; 
             
-            // Extract the base hostname (example: github.com)
             let hostname = url.hostname;
-            // Remove 'www.' to ensure domain matching works cleanly
+    
             if (hostname.startsWith('www.')) {
                 hostname = hostname.substring(4);
             }
@@ -29,7 +28,6 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
     if (domain) {
         console.log(`[SessionSentinel] Tab closed. Purging session data for: ${domain}`);
         purgeCookiesForDomain(domain);
-        // Clean up the dictionary memory
         delete tabDomains[tabId];
     }
 });
@@ -44,7 +42,6 @@ function purgeCookiesForDomain(domain) {
             const cleanDomain = cookie.domain.startsWith('.') ? cookie.domain.substring(1) : cookie.domain;
             const cookieUrl = protocol + cleanDomain + cookie.path;
             
-            // Delete the token
             chrome.cookies.remove({
                 url: cookieUrl,
                 name: cookie.name
